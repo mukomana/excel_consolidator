@@ -1,0 +1,30 @@
+[
+    {
+        "name":"AGINCOURT",
+        "site":"https://tenant.sharepoint.com/sites/Johannesburg"
+    },
+    {
+        "name":"AHRI",
+        "site":"https://tenant.sharepoint.com/sites/Durban"
+    },
+    {
+        "name":"BAMMISHO",
+        "site":"https://tenant.sharepoint.com/sites/CapeTown"
+    },
+     {
+        "name":"C-SHARP",
+        "site":"https://tenant.sharepoint.com/sites/Johannesburg"
+    },
+    {
+        "name":"DIMAMO",
+        "site":"https://tenant.sharepoint.com/sites/Durban"
+    },
+    {
+        "name":"GRT-INSPIRED",
+        "site":"https://tenant.sharepoint.com/sites/CapeTown"
+    },
+    {
+        "name":"USINGA",
+        "site":"https://tenant.sharepoint.com/sites/CapeTown"
+    }
+]
