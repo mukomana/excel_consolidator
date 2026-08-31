@@ -82,20 +82,12 @@ COMMON_KPI_LABELS = {
         "Which week are you reporting on (indicate start and end date)"
     ],
 
-    "weeks_elapsed": [
-        "How many weeks have gone since starting"
+    "week": [
+        "How many weeks have gone since starting this FCA/Trimester?"
     ],
 
     "time_elapsed_pct": [
         "What percentage of time have you now covered"
-    ],
-
-    "allocated": [
-        "allocated"
-    ],
-
-    "completed": [
-        "completed"
     ],
 
     "completion_rate": [
@@ -118,7 +110,7 @@ COMMON_KPI_LABELS = {
 
 FIELD_TELEPHONE_LABELS = {
 
-    "fca": [
+    "trimester": [
         "Which FCA /Trimester Are you currently working in?"
     ],
 
@@ -128,6 +120,14 @@ FIELD_TELEPHONE_LABELS = {
 
     "period_end": [
         "On which date did you start this 15 week FCA/Trimester?"
+    ],
+
+    "allocated": [
+        "How many households are allocated to this FCA/Trimester?"
+    ],
+
+    "completed": [
+        "How many households have been completed? (i.e. have been finalised, gone through QC and accepted in database as being completely surveyed)"
     ],
 
     "non_contact": [
@@ -191,6 +191,14 @@ VA_LABELS = {
         "On which date did you start working on cases in this calendar year?"
     ],
 
+    "allocated": [
+        "How many VA cases are allocated to this calendar year?"
+    ],
+
+    "completed": [
+        "How many VA cases have been completed? (i.e. have been finalised, gone through QC and accepted in database as being completely surveyed)"
+    ],
+
     "premature": [
         "Premature"
     ],
@@ -229,6 +237,37 @@ VA_LABELS = {
     ]
 
 }
+
+###############################################################################
+# PAIRED FIELDS
+#
+# Some rows in the source sheet carry TWO related values on the same row
+# (a start value in one column and an end value further along), but both
+# logical fields share the exact same row label. find_value() can only ever
+# return one value for a given label, so if start_date and end_date fields
+# both search for the same label text, the second call just re-finds the
+# same cell and returns the same (start) value again -- end_date silently
+# gets overwritten with start_date.
+#
+# This map tells extract_sheet() which field-pairs need to be read together,
+# from a single row, at two different column offsets.
+###############################################################################
+
+PAIRED_FIELDS = {
+    ("report_start_date", "report_end_date"): (
+        ["Which week are you reporting on (indicate start and end date)"],
+        1, 2  # value at label_col+1 -> start, label_col+2 -> end
+    ),
+    ("period_start", "period_end"): (
+        ["On which date did you start this 15 week FCA/Trimester?"],
+        1, 2
+    ),
+    ("year_start_date", "year_end_date"): (
+        ["On which date did you start working on cases in this calendar year?"],
+        1, 2
+    ),
+}
+
 ###########################################################################
 # HELPERS
 ###########################################################################
@@ -277,15 +316,48 @@ def parse_date(value):
 
 
 ###########################################################################
+# MERGED-CELL HELPER
+#
+# In openpyxl, only the TOP-LEFT cell of a merged range actually stores a
+# value -- every other cell in that range reads as None. These report
+# templates use merged cells for several value cells, so a raw
+# ws.cell(row, col).value can silently come back empty even when a value
+# is visibly there. resolve_merge() redirects any cell inside a merge to
+# its top-left cell before reading.
+###########################################################################
+
+def resolve_merge(ws, cell):
+
+    for merged_range in ws.merged_cells.ranges:
+
+        if cell.coordinate in merged_range:
+
+            return ws.cell(
+                row=merged_range.min_row,
+                column=merged_range.min_col
+            )
+
+    return cell
+
+
+def get_cell_value(ws, row, column):
+
+    cell = ws.cell(row=row, column=column)
+
+    cell = resolve_merge(ws, cell)
+
+    return cell.value
+
+
+###########################################################################
 # FIND LABEL
 ###########################################################################
 
-def find_value(ws, labels):
+def find_label_cell(ws, labels):
 
     """
-    Search worksheet for one of the labels.
-
-    Returns the value immediately to the right.
+    Search worksheet for one of the labels. Returns the matching cell,
+    or None.
     """
 
     labels = [normalise(x) for x in labels]
@@ -294,29 +366,57 @@ def find_value(ws, labels):
 
         for cell in row:
 
-            cell_value = normalise(cell.value)
+            if normalise(cell.value) in labels:
 
-            if cell_value in labels:
-
-                # Right cell
-
-                value = ws.cell(
-                    row=cell.row,
-                    column=cell.column + 1
-                ).value
-
-                if value is None:
-
-                    # Try two columns to the right
-
-                    value = ws.cell(
-                        row=cell.row,
-                        column=cell.column + 2
-                    ).value
-
-                return value
+                return cell
 
     return None
+
+
+def find_value(ws, labels):
+
+    """
+    Search worksheet for one of the labels.
+
+    Returns the value immediately to the right (merge-aware).
+    """
+
+    label_cell = find_label_cell(ws, labels)
+
+    if label_cell is None:
+        return None
+
+    value = get_cell_value(ws, label_cell.row, label_cell.column + 1)
+
+    if value is None:
+
+        # Try two columns to the right
+
+        value = get_cell_value(ws, label_cell.row, label_cell.column + 2)
+
+    return value
+
+
+def find_value_pair(ws, labels, offset_a=1, offset_b=2):
+
+    """
+    Search worksheet for one of the labels, and return TWO values from
+    that same row (merge-aware) -- e.g. a start value and an end value
+    that live on the same labelled row but in different columns.
+
+    Returns (value_a, value_b), or (None, None) if the label isn't found.
+    """
+
+    label_cell = find_label_cell(ws, labels)
+
+    if label_cell is None:
+        return None, None
+
+    value_a = get_cell_value(ws, label_cell.row, label_cell.column + offset_a)
+    value_b = get_cell_value(ws, label_cell.row, label_cell.column + offset_b)
+
+    return value_a, value_b
+
 
 def extract_sheet(sheet, survey_type, labels):
 
@@ -327,10 +427,50 @@ def extract_sheet(sheet, survey_type, labels):
     }
 
     ###########################################################################
+    # Paired fields (start/end values sharing one row label)
+    #
+    # Handled first, and excluded from the generic single-value loops below
+    # so they don't get re-processed (and re-overwritten) a second time.
+    ###########################################################################
+
+    paired_field_names = set()
+
+    for (field_a, field_b), (aliases, offset_a, offset_b) in PAIRED_FIELDS.items():
+
+        # Only apply a pair if both fields are actually relevant to this
+        # sheet (i.e. present in either the common or survey-specific labels)
+        relevant = (
+            field_a in COMMON_KPI_LABELS or field_a in labels
+        ) and (
+            field_b in COMMON_KPI_LABELS or field_b in labels
+        )
+
+        if not relevant:
+            continue
+
+        value_a, value_b = find_value_pair(sheet, aliases, offset_a, offset_b)
+
+        if "date" in field_a:
+            value_a = parse_date(value_a)
+        if "date" in field_b:
+            value_b = parse_date(value_b)
+
+        if value_a is not None:
+            record[field_a] = value_a
+        if value_b is not None:
+            record[field_b] = value_b
+
+        paired_field_names.add(field_a)
+        paired_field_names.add(field_b)
+
+    ###########################################################################
     # Common KPIs
     ###########################################################################
 
     for field, aliases in COMMON_KPI_LABELS.items():
+
+        if field in paired_field_names:
+            continue
 
         value = find_value(sheet, aliases)
 
@@ -350,6 +490,9 @@ def extract_sheet(sheet, survey_type, labels):
     ###########################################################################
 
     for field, aliases in labels.items():
+
+        if field in paired_field_names:
+            continue
 
         value = find_value(sheet, aliases)
 

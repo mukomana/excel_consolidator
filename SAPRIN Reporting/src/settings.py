@@ -47,7 +47,8 @@ for folder in [
 DATA_SOURCE = "local"
 
 # Used when DATA_SOURCE = "local"
-LOCAL_REPORTS_FOLDER = "C:/Users/freedom.mukomana/OneDrive - South African Medical Research Council/Documents/Coding/Python/SAPRIN Reporting/archive"
+LOCAL_REPORTS_FOLDER = "C:/Users/freedom.mukomana/OneDrive - South African Medical Research Council/SAPRIN - South African Population Research Infrastructure Network-Reporting - Documents"
+    #"C:/Users/freedom.mukomana/OneDrive - South African Medical Research Council/Documents/Coding/Python/SAPRIN Reporting/archive"
 
 ###############################################################################
 # SHAREPOINT
@@ -156,3 +157,38 @@ MAX_UPLOAD_RETRIES = 3
 DEBUG = True
 
 VERBOSE = True
+
+###############################################################################
+# REPORT PROCESSING OPTIONS
+###############################################################################
+
+# True  -> Process only the latest report for each site
+# False -> Process all reports found
+PROCESS_LATEST_ONLY = False
+
+###############################################################################
+# OPTIONAL FILTERS
+###############################################################################
+
+# Examples:
+# FILTER_TRIMESTER = "Trimester 1"
+# FILTER_WEEK = "Week 09"
+
+FILTER_TRIMESTER = None
+FILTER_WEEK = None
+
+###############################################################################
+# MANUAL FILE SELECTION
+###############################################################################
+
+# If this list contains one or more files,
+# ONLY these files will be processed.
+#
+# Leave empty to ignore.
+
+MANUAL_REPORTS = [
+
+    # ROOT_DIR.parent /
+    # "Archive/Johannesburg/Weekly Reports/Trimester 1/Week 09/JHB.xlsx",
+
+]

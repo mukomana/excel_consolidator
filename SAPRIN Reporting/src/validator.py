@@ -62,10 +62,11 @@ def validate_record(record):
     required = [
 
         "site",
-        "start_date",
-        "end_date",
-        "allocated",
-        "completed"
+        "report_start_date",
+        "report_end_date"
+        #,
+        #"allocated",
+        #"completed"
 
     ]
 
@@ -93,7 +94,7 @@ def validate_record(record):
     # Dates
     ###########################################################################
 
-    if record["start_date"] > record["end_date"]:
+    if record["report_start_date"] > record["report_end_date"]:
 
         result.add_error(
 
@@ -105,43 +106,68 @@ def validate_record(record):
     # Counts
     ###########################################################################
 
-    try:
+    allocated_raw = record.get("allocated")
+    completed_raw = record.get("completed")
 
-        allocated = float(record["allocated"])
+    both_blank = allocated_raw in [None, ""] and completed_raw in [None, ""]
 
-        completed = float(record["completed"])
+    if both_blank:
 
-        if allocated < 0:
+        # Nothing was reported this week -- e.g. a Verbal Autopsy tab with
+        # no cases that week, or a Field/Telephonic tab with no household
+        # activity. This is a legitimate "no activity" week, not a data
+        # error, so the numeric checks below are skipped rather than
+        # failing on missing/blank values.
 
-            result.add_error(
+        result.add_warning(
 
-                "Allocated cannot be negative"
-
-            )
-
-        if completed < 0:
-
-            result.add_error(
-
-                "Completed cannot be negative"
-
-            )
-
-        if completed > allocated:
-
-            result.add_error(
-
-                "Completed exceeds Allocated"
-
-            )
-
-    except Exception:
-
-        result.add_error(
-
-            "Allocated/Completed are not numeric"
+            "No allocated/completed data reported this week (nothing to report)"
 
         )
+
+    else:
+
+        try:
+
+            allocated = float(allocated_raw)
+
+            completed = float(completed_raw)
+
+            if allocated < 0:
+
+                result.add_error(
+
+                    "Allocated cannot be negative"
+
+                )
+
+            if completed < 0:
+
+                result.add_error(
+
+                    "Completed cannot be negative"
+
+                )
+
+            if completed > allocated:
+
+                result.add_error(
+
+                    "Completed exceeds Allocated"
+
+                )
+
+        except Exception:
+
+            # Only one of allocated/completed was blank, or a non-numeric
+            # value was entered -- this is a genuine partial-data anomaly,
+            # not a "nothing to report" week, so it stays flagged.
+
+            result.add_error(
+
+                "Allocated/Completed are not numeric"
+
+            )
 
     ###########################################################################
     # Percentage Fields
@@ -242,7 +268,7 @@ def validate_dataframe(df):
 
     duplicates = df.duplicated(
 
-        subset=["site", "end_date"],
+        subset=["site", "report_end_date"],
 
         keep=False
 
