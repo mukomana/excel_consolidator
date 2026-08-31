@@ -25,6 +25,8 @@ from database import (
     load_history
 )
 
+from weekly_deltas import add_weekly_columns
+
 logger = logging.getLogger(__name__)
 
 
@@ -329,6 +331,9 @@ class WeeklyReportConsolidator:
     def export_history(self, output_folder):
 
         history = load_history()
+
+        if not history.empty:
+            history = add_weekly_columns(history)
 
         history.to_excel(
 
