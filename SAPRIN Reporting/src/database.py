@@ -12,6 +12,8 @@ import logging
 
 import pandas as pd
 
+import sqlite3
+
 from sqlalchemy import (
     create_engine,
     Column,
@@ -205,20 +207,63 @@ class WeeklyReport(Base):
 
 def initialise_database():
     """
-    Create database tables if they do not exist.
-
-    NOTE: this only creates tables that don't exist yet -- it does NOT
-    alter an existing table's columns. If weekly_reports.db already exists
-    from before this schema change, the new columns (survey_type,
-    contacted, refused, participated, consented_yes, consented_no,
-    non_contact, passive_refusal, premature, participation_rate) will be
-    missing from it and inserts will fail. For a dev database it's usually
-    simplest to delete database/weekly_reports.db and let it be recreated
-    fresh; for a production database with data worth keeping, this needs
-    a proper migration (e.g. Alembic) instead of just deleting the file.
+    Create database tables if they do not exist, and upgrade older SQLite
+    tables that are missing newer columns such as survey_type.
     """
 
     Base.metadata.create_all(engine)
+
+    with sqlite3.connect(DATABASE_FILE) as conn:
+        table_exists = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='weekly_reports'"
+        ).fetchone()
+
+        if not table_exists:
+            logger.info("Database initialised.")
+            return
+
+        columns = {
+            row[1]
+            for row in conn.execute("PRAGMA table_info(weekly_reports)").fetchall()
+        }
+
+        required_columns = {
+            "site": "TEXT NOT NULL",
+            "survey_type": "TEXT",
+            "start_date": "DATE",
+            "end_date": "DATE",
+            "allocated": "INTEGER",
+            "completed": "INTEGER",
+            "non_contact": "INTEGER",
+            "passive_refusal": "INTEGER",
+            "contacted": "INTEGER",
+            "refused": "INTEGER",
+            "participated": "INTEGER",
+            "consented_yes": "INTEGER",
+            "consented_no": "INTEGER",
+            "premature": "INTEGER",
+            "completion_rate": "REAL",
+            "contact_rate": "REAL",
+            "participation_rate": "REAL",
+            "dbs_rate": "REAL",
+            "hiv_rate": "REAL",
+            "height_weight_rate": "REAL",
+            "blood_glucose_rate": "REAL",
+            "health_utilisation_rate": "REAL",
+            "source_file": "TEXT",
+            "imported_at": "DATETIME",
+        }
+
+        for column_name, ddl in required_columns.items():
+            if column_name in columns:
+                continue
+
+            logger.warning(
+                f"Adding missing database column: {column_name}"
+            )
+            conn.execute(
+                f"ALTER TABLE weekly_reports ADD COLUMN {column_name} {ddl}"
+            )
 
     logger.info("Database initialised.")
 

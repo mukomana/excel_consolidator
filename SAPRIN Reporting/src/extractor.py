@@ -75,11 +75,13 @@ KPI_LABELS = {
 COMMON_KPI_LABELS = {
 
     "report_start_date": [
-        "Which week are you reporting on (indicate start and end date)"
+        "Which week are you reporting on (indicate start and end date)",
+        "On which date did you start working on cases in this calendar year?"
     ],
 
     "report_end_date": [
-        "Which week are you reporting on (indicate start and end date)"
+        "Which week are you reporting on (indicate start and end date)",
+        "On which date did you start working on cases in this calendar year?"
     ],
 
     "week": [

@@ -1,0 +1,80 @@
+2026-07-16 22:15:12,899 | INFO | ======================================================================
+2026-07-16 22:15:12,899 | INFO | Weekly Report Automation Started
+2026-07-16 22:15:12,899 | INFO | ======================================================================
+2026-07-16 22:15:12,899 | ERROR | [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\sites.json'
+Traceback (most recent call last):
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 195, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 124, in main
+    reports = download_reports()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 67, in download_reports
+    sites = load_sites()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 55, in load_sites
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\sites.json'
+2026-07-16 22:15:30,778 | INFO | ======================================================================
+2026-07-16 22:15:30,779 | INFO | Weekly Report Automation Started
+2026-07-16 22:15:30,779 | INFO | ======================================================================
+2026-07-16 22:15:30,779 | ERROR | [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\sites.json'
+Traceback (most recent call last):
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 195, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 124, in main
+    reports = download_reports()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 67, in download_reports
+    sites = load_sites()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 55, in load_sites
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\sites.json'
+2026-07-16 22:16:12,825 | INFO | ======================================================================
+2026-07-16 22:16:12,825 | INFO | Weekly Report Automation Started
+2026-07-16 22:16:12,825 | INFO | ======================================================================
+2026-07-16 22:16:12,826 | ERROR | [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\nodes.json'
+Traceback (most recent call last):
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 195, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 124, in main
+    reports = download_reports()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 67, in download_reports
+    sites = load_sites()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 55, in load_sites
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\nodes.json'
+2026-07-16 22:16:57,738 | INFO | ======================================================================
+2026-07-16 22:16:57,738 | INFO | Weekly Report Automation Started
+2026-07-16 22:16:57,738 | INFO | ======================================================================
+2026-07-16 22:16:57,738 | ERROR | [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\nodes.json'
+Traceback (most recent call last):
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 195, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 124, in main
+    reports = download_reports()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 67, in download_reports
+    sites = load_sites()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 55, in load_sites
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\nodes.json'
+2026-07-16 22:17:34,480 | INFO | ======================================================================
+2026-07-16 22:17:34,480 | INFO | Weekly Report Automation Started
+2026-07-16 22:17:34,480 | INFO | ======================================================================
+2026-07-16 22:17:34,480 | ERROR | [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\nodes.json'
+Traceback (most recent call last):
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 195, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 124, in main
+    reports = download_reports()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 67, in download_reports
+    sites = load_sites()
+  File "C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\Documents\Coding\Python\SAPRIN Reporting\src\main.py", line 55, in load_sites
+    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\freedom.mukomana\\OneDrive - South African Medical Research Council\\Documents\\Coding\\Python\\SAPRIN Reporting\\src\\config\\nodes.json'

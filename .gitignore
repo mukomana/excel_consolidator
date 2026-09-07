@@ -1,1 +1,14 @@
 /SAPRIN Reporting/config/.env
+
+#Exclude excel files
+*.yml
+*.xlsx
+
+
+# Data folder
+**/output
+**/config
+**/archive
+
+# Output files from R CMD build
+/*.tar.gz

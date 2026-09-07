@@ -47,8 +47,7 @@ for folder in [
 DATA_SOURCE = "local"
 
 # Used when DATA_SOURCE = "local"
-LOCAL_REPORTS_FOLDER = "C:/Users/freedom.mukomana/OneDrive - South African Medical Research Council/SAPRIN - South African Population Research Infrastructure Network-Reporting - Documents"
-    #"C:/Users/freedom.mukomana/OneDrive - South African Medical Research Council/Documents/Coding/Python/SAPRIN Reporting/archive"
+LOCAL_REPORTS_FOLDER = r"C:\Users\freedom.mukomana\OneDrive - South African Medical Research Council\SAPRIN - South African Population Research Infrastructure Network-Reporting - Documents"
 
 ###############################################################################
 # SHAREPOINT
